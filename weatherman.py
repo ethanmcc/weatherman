@@ -188,10 +188,8 @@ def build_environment_json(app, config):
     template.add_resource(build_eb_configuration_template(app, config))
     template.add_resource(build_eb_environment(app, config))
     template.add_resource(build_eb_application_version(app, config))
-    template.add_output(Output(
-        'WebsiteURL',
-        Value=Join('', ['http', GetAtt('Environment', 'EndpointURL')]),
-    ))
+    template.add_output(
+        Output('WebsiteURL', Value=GetAtt('Environment', 'EndpointURL')))
     return template
 
 
@@ -258,10 +256,13 @@ def tag(app_name, env='dev', stack_version='', tags=None):
 
 
 def main(app_name, config_path='~/.weathermanrc', env='dev', dry_run=False,
-         db_engine=None, db_engine_version=None, tags=None,
+         db_engine=None, db_engine_version=None, tags=None, tag_only=False,
          notification_email=None, stack_version='', prompt_db_password=False):
     app = App(app_name, env, stack_version)
     config = get_config(config_path, env)
+    if tag_only:
+        apply_instance_tags(app, tags)
+        sys.exit(0)
     if db_engine:
         config['db_engine'] = db_engine
     if notification_email:
