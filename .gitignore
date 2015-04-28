@@ -1,0 +1,14 @@
+*.pyc
+__pycache__/
+.idea
+.DS_Store
+MANIFEST
+.tox/
+bower_components/
+django_root/static
+Dockerfile
+.ebextensions
+.ropeproject
+django_root/vendor
+*.swp
+*.swo
