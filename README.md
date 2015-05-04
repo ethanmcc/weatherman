@@ -1,6 +1,9 @@
 # weatherman.py
 
-`weatherman` is a script that wraps the creation of Elastic Beanstalk stacks via CloudFormation. It generates a template based on input and configuration, then passes it on to AWS using [CloudFormationConnection.create_stack](http://boto.readthedocs.org/en/latest/ref/cloudformation.html#boto.cloudformation.connection.CloudFormationConnection.create_stack).
+`weatherman` is a script that wraps the creation of Elastic Beanstalk stacks
+via CloudFormation. It generates a template based on input and configuration,
+then passes it on to AWS using
+[CloudFormationConnection.create_stack](http://boto.readthedocs.org/en/latest/ref/cloudformation.html#boto.cloudformation.connection.CloudFormationConnection.create_stack).
 
 ## Signature
 
@@ -14,44 +17,62 @@ The script has usage as follows:
 	                     app-name
 	                     
 #### app-name
-Name of Elastic Beanstalk application to create an environment in. The application will be created if it doesn't exist.
+Name of Elastic Beanstalk application to create an environment in. The
+application will be created if it doesn't exist.
 	
 ## Options
+
+Command line options will override corresponding config file values when
+supplied.
 
 #### -h, --help
 show this help message and exit
 	
 #### -c CONFIG_PATH, --config-path CONFIG_PATH
-Path to weatherman config file. Defaults to `'~/.weathermanrc'`. Options are described [here](#configuration).
+Path to weatherman config file. Defaults to `'~/.weathermanrc'`. Options are
+described [here](#configuration).
 
 #### -e ENV, --env ENV
 Environment (test, dev, qa, pt, prod). Defaults to 'dev'
 
 #### --dry-run
-If this option is passed, weatherman prints the relevant CloudFormation JSON and then exits.
+If this option is passed, weatherman prints the relevant CloudFormation JSON
+and then exits.
 
 #### --db-engine DB_ENGINE
-If CloudFormation's API ever supports it, this adds JSON that will create an RDS database associated with the Elastic Beanstalk stack.
+If CloudFormation's API ever supports it, this adds JSON that will create an
+RDS database associated with the Elastic Beanstalk stack.
 
 #### --db-engine-version DB_ENGINE_VERSION
-If CloudFormation's API ever supports it, this will set the version of the RDS database associated with the Elastic Beanstalk stack.
+If CloudFormation's API ever supports it, this will set the version of the RDS
+database associated with the Elastic Beanstalk stack.
 
 #### --tags TAGS
-A list of tags to place on the instance (e.g. vnoc-rsg) in the format `TAG1NAME=value,TAG2NAME=value2`
+A list of tags to place on the instance (e.g. vnoc-rsg) in the format
+`TAG1NAME=value,TAG2NAME=value2`
 	  	  
 #### --tag-only
-If this option is passed, weatherman will add environment tags and any tags passed with `--tags` to an existing stack and then exit.
+If this option is passed, weatherman will add environment tags and any tags
+passed with `--tags` to an existing stack and then exit.
 
 #### -n NOTIFICATION_EMAIL, --notification-email NOTIFICATION_EMAIL
-Specify the notification email to receive updates on the Elastic Beanstalk stack.
+Specify the notification email to receive updates on the Elastic Beanstalk
+stack.
 
 #### -s STACK_VERSION, --stack-version STACK_VERSION
-A stack version of `2` would create a stack named something like `appname-envname2` or `myapp-dev2`. This feature could be useful for swapping stacks in a blue-green deploy scenario.
+A stack version of `2` would create a stack named something like
+`appname-envname2` or `myapp-dev2`. This feature could be useful for swapping
+stacks in a blue-green deploy scenario.
 
 #### -p, --prompt-db-password
-Environments labeled `prod` will automatically prompt for password. Otherwise, the username and password will just be the app, environment and stack version mashed together.
+Environments labeled `prod` will automatically prompt for password. Otherwise,
+the username and password will just be the app, environment and stack version
+mashed together.
 
 ## Configuration
+
+Weatherman accepts a configuration file to specify default and 
+environment-specific options.
 
 Here's a sample config file, which wants to default to `~/.weathermanrc`:
 
@@ -80,13 +101,15 @@ Here's a sample config file, which wants to default to `~/.weathermanrc`:
 
 Specify the id of the VPC for the stack.
 
-### public_subnets
+#### public_subnets
 
-Specify the public subnets, separated by commas (e.g. `subnet-345345,subnet-123123`).
+Specify the public subnets, separated by commas (e.g.
+`subnet-345345,subnet-123123`).
 
 #### private_subnets
 
-Specify the private subnets, separated by commas (e.g. `subnet-345345,subnet-123123`).
+Specify the private subnets, separated by commas (e.g.
+`subnet-345345,subnet-123123`).
 
 #### ec2_keyname
 
@@ -98,7 +121,8 @@ Specify the instance type for your instance (e.g. `m3.medium`).
 
 #### notification_email
 
-Specify the notification email to receive updates on the Elastic Beanstalk stack.
+Specify the notification email to receive updates on the Elastic Beanstalk
+stack.
 
 #### iam_profile
 
@@ -114,4 +138,6 @@ If `true`, the Elastic Load Balancer will use a public IP address.
 
 #### db_instance_class
 
-Specify the database instance class (e.g. `db.t1.micro`). This won't work until AWS updates the CloudFormation API to actually create Elastic Beanstalk instances.
+Specify the database instance class (e.g. `db.t1.micro`). This won't work
+until AWS updates the CloudFormation API to actually create Elastic Beanstalk
+instances.
