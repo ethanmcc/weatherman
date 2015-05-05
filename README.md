@@ -13,6 +13,7 @@ The script has usage as follows:
 	                     [--db-engine DB_ENGINE]
 	                     [--db-engine-version DB_ENGINE_VERSION] [--tags TAGS]
 	                     [--tag-only] [-n NOTIFICATION_EMAIL] [-s STACK_VERSION]
+	                     [--stack-type]
 	                     [-p]
 	                     app-name
 	                     
@@ -68,6 +69,10 @@ stacks in a blue-green deploy scenario.
 Environments labeled `prod` will automatically prompt for password. Otherwise,
 the username and password will just be the app, environment and stack version
 mashed together.
+
+#### --stack-type
+Optional key for stack solution type.  `python34` is the default, currently 
+`nodejs` is the only other option
 
 ## Configuration
 

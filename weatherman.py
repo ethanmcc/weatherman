@@ -51,8 +51,15 @@ def build_security_group(app, config):
 def build_eb_configuration_template(app, config):
     ct = eb.ConfigurationTemplate('ConfigurationTemplate')
     ct.ApplicationName = app.name
-    ct.SolutionStackName = ('64bit Debian jessie v1.1.0 running '
-                            'Python 3.4 (Preconfigured - Docker)')
+
+    stack_type_map = {
+        'python34': '64bit Debian jessie v1.1.0 running '
+                    'Python 3.4 (Preconfigured - Docker)',
+        'nodejs': '64bit Amazon Linux 2015.03 v1.3.1 running Node.js'
+    }
+    
+    ct.SolutionStackName = (stack_type_map[config['stack_type']])
+
     ct.OptionSettings = [
         eb.OptionSettings(
             Namespace='aws:autoscaling:launchconfiguration',
@@ -257,9 +264,11 @@ def tag(app_name, env='dev', stack_version='', tags=None):
 
 def main(app_name, config_path='~/.weathermanrc', env='dev', dry_run=False,
          db_engine=None, db_engine_version=None, tags=None, tag_only=False,
-         notification_email=None, stack_version='', prompt_db_password=False):
+         notification_email=None, stack_version='', prompt_db_password=False,
+         stack_type='python34', ):
     app = App(app_name, env, stack_version)
     config = get_config(config_path, env)
+    config['stack_type'] = stack_type
     if tag_only:
         apply_instance_tags(app, tags)
         sys.exit(0)
