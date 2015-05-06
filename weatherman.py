@@ -8,7 +8,7 @@ import os.path
 import sys
 import time
 
-from troposphere import Ref, Template, Output, GetAtt, Join
+from troposphere import Ref, Template, Output, GetAtt
 import argh
 import boto
 import troposphere.ec2 as ec2
@@ -57,7 +57,7 @@ def build_eb_configuration_template(app, config):
                     'Python 3.4 (Preconfigured - Docker)',
         'nodejs': '64bit Amazon Linux 2015.03 v1.3.1 running Node.js'
     }
-    
+
     ct.SolutionStackName = (stack_type_map[config['stack_type']])
 
     ct.OptionSettings = [
