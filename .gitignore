@@ -14,6 +14,7 @@ django_root/vendor
 *.swo
 dist/
 *.egg-info
+_build/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

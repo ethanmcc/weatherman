@@ -82,8 +82,9 @@ def main(config, passthrough_args=None):
         process.wait()
 
 
-def dispatch():
+def get_parser():
     parser = argparse.ArgumentParser(
+        prog='weatherman',
         description='Create an Elastic Beanstalk Environment. Options will be '
         'read from your config_path (default ~/.weathermanrc). Additional '
         'options will be passed through to eb create. See eb create --help '
@@ -92,7 +93,7 @@ def dispatch():
     parser.add_argument('appname', help='Application name')
     parser.add_argument(
         '--config-path',
-        default=os.path.expanduser('~/.weathermanrc'),
+        default='~/.weathermanrc',
         help='Custom config file path (default is ~/.weathermanrc)',
     )
     parser.add_argument('--env',
@@ -165,9 +166,13 @@ def dispatch():
         action='store_true',
         help='Dry run mode. Won\'t run external commands.'
     )
+    return parser
 
+
+def dispatch():
+    parser = get_parser()
     args = vars(parser.parse_known_args()[0])
-    config_path = args.get('config_path')
+    config_path = os.path.expanduser(args.get('config_path'))
     config = ConfigParser()
     config.read(config_path)
 
