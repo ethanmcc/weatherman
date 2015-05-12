@@ -4,7 +4,7 @@ except ImportError:
     from configparser import ConfigParser
 from subprocess import Popen, list2cmdline
 import argparse
-import os.path
+import os
 
 
 STACK_TYPE_MAP = {
@@ -72,6 +72,13 @@ def main(config, passthrough_args=None):
     else:
         init_eb_environment(app)
         process = Popen(command)
+        process.wait()
+        editor_env = os.environ.copy()
+        editor_env['EDITOR'] = (
+            'sed -i "s/Notification Endpoint: null/'
+            'Notification Endpoint: {}"/g'.format(
+                config.get('notification_email')))
+        process = Popen(['eb', 'config', app.stackname], env=editor_env)
         process.wait()
 
 
@@ -144,7 +151,8 @@ def dispatch():
     )
     parser.add_argument(
         '--notification-email',
-        help='Email address to send stack updates to (TODO: fix this)',
+        help='Email address to send stack updates to (Note: This will fail '
+        'if you Ctrl-C out. Use eb config to edit it manually.)',
     )
     parser.add_argument(
         '--prompt-db-password',
