@@ -189,3 +189,7 @@ def dispatch():
                 cli_args.append(value)
     main_args, passthrough_args = parser.parse_known_args(cli_args)
     main(vars(main_args), passthrough_args=passthrough_args)
+
+
+if __name__ == '__main__':
+    dispatch()
