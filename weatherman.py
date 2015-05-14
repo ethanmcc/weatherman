@@ -44,6 +44,18 @@ def build_eb_cli_command(app, config, passthrough_args):
         if not config.get('prompt_db_password'):
             ebargs.append(
                 '--database.password={}'.format(''.join([app.name, app.env])))
+        if config.get('db_engine'):
+            ebargs.append(
+                '--database.engine={}'.format(
+                    config.get('db_engine')))
+        if config.get('db_version'):
+            ebargs.append(
+                '--database.version={}'.format(
+                    config.get('db_version')))
+        if config.get('db_size'):
+            ebargs.append(
+                '--database.size={}'.format(
+                    config.get('db_size')))
     return ebargs
 
 
