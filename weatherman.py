@@ -31,6 +31,8 @@ def build_eb_cli_command(app, config, passthrough_args):
         ebargs.append('--vpc.publicip')
     if config.get('assign_elb_public_ip'):
         ebargs.append('--vpc.elbpublic')
+    if config.get('profile'):
+        ebargs.append('--profile={}'.format(config.get('profile')))
 
     if set(['-db', '--database']).intersection(set(passthrough_args)):
         ebargs.append(
@@ -55,7 +57,10 @@ class App(object):
     def __init__(self, name, env, stack_version, platform):
         self.name = name
         self.env = env
-        self.stackname = '{}-{}{}'.format(name, env, stack_version)
+        if env == 'prod':
+            self.stackname = '{}{}'.format(name, stack_version)
+        else:
+            self.stackname = '{}-{}{}'.format(name, env, stack_version)
         self.platform = platform
 
 
@@ -75,9 +80,15 @@ def main(config, passthrough_args=None):
         process.wait()
         editor_env = os.environ.copy()
         editor_env['EDITOR'] = (
-            'sed -i "s/Notification Endpoint: null/'
-            'Notification Endpoint: {}"/g'.format(
-                config.get('notification_email')))
+            'python -c "'
+            'import sys; '
+            'file = open(sys.argv[-1], \'r\'); '
+            'yaml = file.read(); '
+            'file.close(); '
+            'updated = yaml.replace(\'Notification Endpoint: null\', \'{}\'); '
+            'file = open(sys.argv[-1], \'w\'); '
+            'file.write(updated); '
+            'file.close();"'.format(config.get('notification_email')))
         process = Popen(['eb', 'config', app.stackname], env=editor_env)
         process.wait()
 
@@ -171,12 +182,13 @@ def get_parser():
 
 def dispatch():
     parser = get_parser()
-    args = vars(parser.parse_known_args()[0])
+    argsns, passthrough_args = parser.parse_known_args()
+    args = vars(argsns)
     config_path = os.path.expanduser(args.get('config_path'))
     config = ConfigParser()
     config.read(config_path)
 
-    args.update(config[args['env']])
+    args.update(dict(config.items(args['env'])))
     cli_args = []
     for key, value in args.items():
         if value in (False, None):
@@ -187,8 +199,8 @@ def dispatch():
             cli_args.append('--{}'.format(key.replace('_', '-')))
             if value is not True:
                 cli_args.append(value)
-    main_args, passthrough_args = parser.parse_known_args(cli_args)
-    main(vars(main_args), passthrough_args=passthrough_args)
+    main_args = vars(parser.parse_known_args(cli_args)[0])
+    main(main_args, passthrough_args=passthrough_args)
 
 
 if __name__ == '__main__':

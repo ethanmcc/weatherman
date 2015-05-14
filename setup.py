@@ -6,7 +6,7 @@ except ImportError:
 
 setup(
     name='weatherman',
-    version='0.2',
+    version='0.3',
     description='Elastic Beanstalk Stack Launcher',
     author='Ethan McCreadie',
     author_email='ethanmcc@gmail.com',
@@ -14,7 +14,6 @@ setup(
     py_modules=['weatherman'],
     install_requires=[
         'awsebcli>=3.3.2',
-        'ConfigArgParse==0.9.3',
     ],
     entry_points={
         'console_scripts': [
