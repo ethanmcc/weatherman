@@ -166,10 +166,6 @@ def get_parser():
         help='Assign public IP to ELB. Default is False.'
     )
     parser.add_argument(
-        '--db-instance-class',
-        help='Instance class to use if a database is specified via --db',
-    )
-    parser.add_argument(
         '--profile',
         help='Name of AWS config profile to use for AWS commands',
     )
@@ -188,6 +184,23 @@ def get_parser():
         '--dry-run',
         action='store_true',
         help='Dry run mode. Won\'t run external commands.'
+    )
+    parser.add_argument(
+        '--db-instance-class',
+        help='Passed through to eb as --database.instance if --database is '
+        'set.',
+    )
+    parser.add_argument(
+        '--db-engine',
+        help='Passed through to eb as --database.engine if --database is set.'
+    )
+    parser.add_argument(
+        '--db-size',
+        help='Passed through to eb as --database.size if --database is set.'
+    )
+    parser.add_argument(
+        '--db-version',
+        help='Passed through to eb as --database.version if --database is set.'
     )
     return parser
 
