@@ -19,13 +19,21 @@ def build_eb_cli_command(app, config, passthrough_args):
         'eb',
         'create',
         app.stackname,
-        '--instance_profile={}'.format(config.get('iam_profile')),
-        '--keyname={}'.format(config.get('ec2_keyname')),
-        '--instance_type={}'.format(config.get('instance_type')),
         '--platform={}'.format(app.platform),
-        '--vpc.id={}'.format(config.get('vpc_id')),
-        '--vpc.ec2subnets={}'.format(config.get('private_subnets')),
     ] + passthrough_args
+    if 'iam_profile' in config:
+        ebargs.append(
+            '--instance_profile={}'.format(config.get('iam_profile')))
+    if 'ec2_keyname' in config:
+        ebargs.append('--keyname={}'.format(config.get('ec2_keyname')))
+    if 'instance_type' in config:
+        ebargs.append('--instance_type={}'.format(config.get('instance_type')))
+    if 'vpc_id' in config:
+        ebargs.append('--vpc.id={}'.format(config.get('vpc_id')))
+    if 'private_subnets' in config:
+        ebargs.append(
+            '--vpc.ec2subnets={}'.format(config.get('private_subnets')))
+
     # Notification Email
     if config.get('assign_public_ip'):
         ebargs.append('--vpc.publicip')
@@ -144,6 +152,7 @@ def get_parser():
     )
     parser.add_argument(
         '--instance-type',
+        default='t2.micro',
         help='Instance type (t2.micro, m3.medium, etc.)',
     )
     parser.add_argument(
