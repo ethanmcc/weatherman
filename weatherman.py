@@ -28,19 +28,21 @@ def build_eb_cli_command(app, config, passthrough_args):
         ebargs.append('--keyname={}'.format(config.get('ec2_keyname')))
     if 'instance_type' in config:
         ebargs.append('--instance_type={}'.format(config.get('instance_type')))
-    if 'vpc_id' in config:
-        ebargs.append('--vpc.id={}'.format(config.get('vpc_id')))
-    if 'private_subnets' in config:
-        ebargs.append(
-            '--vpc.ec2subnets={}'.format(config.get('private_subnets')))
-
-    # Notification Email
-    if config.get('assign_public_ip'):
-        ebargs.append('--vpc.publicip')
-    if config.get('assign_elb_public_ip'):
-        ebargs.append('--vpc.elbpublic')
     if config.get('profile'):
         ebargs.append('--profile={}'.format(config.get('profile')))
+
+    if 'vpc_id' in config:
+        ebargs.append('--vpc.id={}'.format(config.get('vpc_id')))
+        if config.get('assign_elb_public_ip'):
+            ebargs.append('--vpc.elbpublic')
+            if 'public_subnets' in config:
+                ebargs.append(
+                    '--vpc.ec2subnets={}'.format(config.get('public_subnets')))
+        elif 'private_subnets' in config:
+            ebargs.append(
+                '--vpc.ec2subnets={}'.format(config.get('private_subnets')))
+        if config.get('assign_public_ip'):
+            ebargs.append('--vpc.publicip')
 
     if set(['-db', '--database']).intersection(set(passthrough_args)):
         ebargs.append(

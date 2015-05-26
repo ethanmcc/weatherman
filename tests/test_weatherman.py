@@ -78,6 +78,17 @@ class SampleConfigurationTestCase(BaseTestCase):
         self.assertIn('--vpc.ec2subnets=private1,private2', self.command)
 
 
+class PublicServerTestCase(BaseTestCase):
+    config = {
+        'assign_elb_public_ip': True,
+        'vpc_id': 'vpcid',
+        'public_subnets': 'public1,public2',
+    }
+
+    def test_includes_public_subnets(self):
+        self.assertIn('--vpc.ec2subnets=public1,public2', self.command)
+
+
 class DefaultArgumentTestCase(TestCase):
 
     @classmethod
