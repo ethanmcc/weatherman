@@ -8,7 +8,8 @@ import os
 
 
 STACK_TYPE_MAP = {
-    'python34': '64bit Debian jessie v1.1.0 running '
+    'python34': '64bit Amazon Linux 2015.03 v1.3.1 running Python 3.4',
+    'python34docker': '64bit Debian jessie v1.1.0 running '
                 'Python 3.4 (Preconfigured - Docker)',
     'nodejs': '64bit Amazon Linux 2015.03 v1.3.1 running Node.js',
 }
@@ -138,7 +139,8 @@ def get_parser():
     parser.add_argument(
         '--stack-type',
         default='python34',
-        help='Type of stack to create (currently python34, nodejs)',
+        help='Type of stack to create (currently python34, python34docker, '
+        'or nodejs)',
     )
     parser.add_argument(
         '--private-subnets',

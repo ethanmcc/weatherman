@@ -35,8 +35,8 @@ class EmptyConfigurationTestCase(BaseTestCase):
             self.assertFalse(argument.endswith('=None'))
 
     def test_platform(self):
-        self.assertIn('--platform=64bit Debian jessie v1.1.0 running Python '
-                      '3.4 (Preconfigured - Docker)', self.command)
+        self.assertIn('--platform=64bit Amazon Linux 2015.03 v1.3.1 running '
+                      'Python 3.4', self.command)
 
 
 class PassthroughArgsTestCase(BaseTestCase):
