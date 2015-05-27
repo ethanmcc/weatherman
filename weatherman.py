@@ -52,7 +52,7 @@ def build_eb_cli_command(app, config, passthrough_args):
             ebargs.append(
                 '--database.instance={}'.format(
                     config.get('db_instance_class')))
-        if not config.get('prompt_db_password'):
+        if app.env != 'prod' and not config.get('prompt_db_password'):
             ebargs.append(
                 '--database.password={}'.format(''.join([app.name, app.env])))
         if config.get('db_engine'):
