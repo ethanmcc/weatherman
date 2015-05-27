@@ -112,7 +112,11 @@ def main(config, passthrough_args=None):
             'file = open(sys.argv[-1], \'w\'); '
             'file.write(updated); '
             'file.close();"'.format(config.get('notification_email')))
-        process = Popen(['eb', 'config', app.stackname], env=editor_env)
+
+        pargs = ['eb', 'config', app.stackname]
+        if config.get('profile'):
+            pargs += ['--profile', config.get('profile')]
+        process = Popen(pargs, env=editor_env)
         process.wait()
 
 
