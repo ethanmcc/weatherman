@@ -108,7 +108,8 @@ def main(config, passthrough_args=None):
             'file = open(sys.argv[-1], \'r\'); '
             'yaml = file.read(); '
             'file.close(); '
-            'updated = yaml.replace(\'Notification Endpoint: null\', \'{}\'); '
+            'updated = yaml.replace(\'Notification Endpoint: null\', '
+            '\'Notification Endpoint: {}\'); '
             'file = open(sys.argv[-1], \'w\'); '
             'file.write(updated); '
             'file.close();"'.format(config.get('notification_email')))

@@ -6,7 +6,7 @@ except ImportError:
 
 setup(
     name='weatherman',
-    version='0.9',
+    version='0.10',
     description='Elastic Beanstalk Stack Launcher',
     author='Ethan McCreadie',
     author_email='ethanmcc@gmail.com',
