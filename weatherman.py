@@ -39,10 +39,11 @@ def build_eb_cli_command(app, config, passthrough_args):
                 '--vpc.elbsubnets={}'.format(config.get('elb_subnets')))
         if config.get('assign_elb_public_ip'):
             ebargs.append('--vpc.elbpublic')
-            if 'public_subnets' in config and app.env == 'prod':
-                ebargs.append('--vpc.publicip')
+            if 'public_subnets' in config:
                 ebargs.append(
                     '--vpc.ec2subnets={}'.format(config.get('public_subnets')))
+                if app.env == 'prod':
+                    ebargs.append('--vpc.publicip')
         elif 'private_subnets' in config:
             ebargs.append(
                 '--vpc.ec2subnets={}'.format(config.get('private_subnets')))
