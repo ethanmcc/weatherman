@@ -34,9 +34,13 @@ def build_eb_cli_command(app, config, passthrough_args):
 
     if 'vpc_id' in config:
         ebargs.append('--vpc.id={}'.format(config.get('vpc_id')))
+        if config.get('elb_subnets'):
+            ebargs.append(
+                '--vpc.elbsubnets={}'.format(config.get('elb_subnets')))
         if config.get('assign_elb_public_ip'):
             ebargs.append('--vpc.elbpublic')
-            if 'public_subnets' in config:
+            if 'public_subnets' in config and app.env == 'prod':
+                ebargs.append('--vpc.publicip')
                 ebargs.append(
                     '--vpc.ec2subnets={}'.format(config.get('public_subnets')))
         elif 'private_subnets' in config:
@@ -154,6 +158,10 @@ def get_parser():
     parser.add_argument(
         '--public-subnets',
         help='Comma-separated list of subnet ids for public instances',
+    )
+    parser.add_argument(
+        '--elb-subnets',
+        help='Comma-separated list of subnet ids for Elastic Load Balancers',
     )
     parser.add_argument(
         '--vpc-id',
