@@ -21,6 +21,7 @@ def build_eb_cli_command(app, config, passthrough_args):
         'create',
         app.stackname,
         '--platform={}'.format(app.platform),
+        '--debug', 
     ] + passthrough_args
     if 'iam_profile' in config:
         ebargs.append(
@@ -80,7 +81,12 @@ def build_eb_cli_command(app, config, passthrough_args):
 
 def init_eb_environment(app):
     print('Creating application {}.'.format(app.name))
-    process = Popen(['eb', 'init', app.name, '--platform', app.platform])
+    process = Popen([
+        'eb', 'init',
+        app.name,
+        '--platform', app.platform,
+        '--region', app.region,
+    ])
     process.wait()
 
 
@@ -93,6 +99,9 @@ class App(object):
         else:
             self.stackname = '{}-{}{}'.format(name, env, stack_version)
         self.platform = platform
+
+        # TODO: parse arg
+        self.region='us-east-1'
 
 
 def main(config, passthrough_args=None):
