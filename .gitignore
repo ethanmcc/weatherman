@@ -12,3 +12,11 @@ Dockerfile
 django_root/vendor
 *.swp
 *.swo
+dist/
+*.egg-info
+_build/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
