@@ -161,7 +161,7 @@ def get_parser():
                         help='Version identifier (e.g. 2 for dev2)')
     parser.add_argument(
         '--stack-type',
-        default='python34',
+        default='python34_2',
         help='Type of stack to create (currently python34, python34docker, '
         'or nodejs)',
     )
