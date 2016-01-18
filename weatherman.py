@@ -9,7 +9,8 @@ import os
 
 STACK_TYPE_MAP = {
     'python34': '64bit Amazon Linux 2015.03 v1.3.1 running Python 3.4',
-    'python34_2': '64bit Amazon Linux 2015.03 v2.0.1 running Python 3.4',
+    'python34_2.0.1': '64bit Amazon Linux 2015.03 v2.0.1 running Python 3.4',
+    'python34_2.0.6': '64bit Amazon Linux 2015.09 v2.0.6 running Python 3.4',
     'python34docker': '64bit Debian jessie v1.1.0 running '
                 'Python 3.4 (Preconfigured - Docker)',
     'nodejs': '64bit Amazon Linux 2015.03 v1.3.1 running Node.js',
@@ -161,7 +162,7 @@ def get_parser():
                         help='Version identifier (e.g. 2 for dev2)')
     parser.add_argument(
         '--stack-type',
-        default='python34_2',
+        default='python34_2.0.6',
         help='Type of stack to create (currently python34, python34docker, '
         'or nodejs)',
     )
